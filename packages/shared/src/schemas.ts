@@ -10,7 +10,10 @@ export const createReportSchema = z.object({
   description: z
     .string()
     .trim()
-    .min(LIMITS.descriptionMin, `Describe the issue in at least ${LIMITS.descriptionMin} characters`)
+    .min(
+      LIMITS.descriptionMin,
+      `Describe the issue in at least ${LIMITS.descriptionMin} characters`,
+    )
     .max(LIMITS.descriptionMax),
   lat: latitude,
   lng: longitude,
