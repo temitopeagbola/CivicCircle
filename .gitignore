@@ -1,0 +1,29 @@
+node_modules/
+dist/
+build/
+coverage/
+*.tsbuildinfo
+.env
+.env.*
+!.env.example
+
+# Expo
+.expo/
+expo-env.d.ts
+apps/web/ios/
+apps/web/android/
+web-build/
+
+# Firebase emulators
+firebase-debug.log*
+firestore-debug.log*
+ui-debug.log*
+.firebase/
+
+# Playwright
+test-results/
+playwright-report/
+blob-report/
+
+.DS_Store
+*.log
