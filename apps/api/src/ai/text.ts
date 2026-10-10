@@ -45,6 +45,7 @@ const CANONICAL: Record<string, string> = {
 
 export function stem(word: string): string {
   if (word.length > 4 && word.endsWith('ies')) return `${word.slice(0, -3)}y`;
+  if (word.length > 4 && /(ch|sh|x|ss|z)es$/.test(word)) return word.slice(0, -2);
   if (word.length > 5 && word.endsWith('ing')) return word.slice(0, -3);
   if (word.length > 4 && word.endsWith('ed')) return word.slice(0, -2);
   if (word.length > 3 && word.endsWith('s') && !word.endsWith('ss')) return word.slice(0, -1);

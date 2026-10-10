@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import { classifyText, moderateText, severityFor } from './mock';
-import { cosineSimilarity, hashEmbedding, oneLineSummary, tokenize } from './text';
+import { cosineSimilarity, hashEmbedding, oneLineSummary, stem, tokenize } from './text';
 
 describe('mock classifier', () => {
   it.each([
@@ -86,5 +86,13 @@ describe('mock moderation', () => {
     expect(moderateText("I'm going to hurt whoever dumped this").flagged).toBe(true);
     expect(moderateText('https://a.test https://b.test https://c.test').reasons).toEqual(['spam']);
     expect(moderateText('This rubbish is disgusting and dangerous').flagged).toBe(false);
+  });
+});
+
+describe('stemmer', () => {
+  it('handles common English plurals and tenses', () => {
+    expect(
+      ['benches', 'bushes', 'boxes', 'lights', 'flooding', 'flooded', 'puddles'].map(stem),
+    ).toEqual(['bench', 'bush', 'box', 'light', 'flood', 'flood', 'puddle']);
   });
 });

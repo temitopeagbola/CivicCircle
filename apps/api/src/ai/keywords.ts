@@ -7,7 +7,17 @@ export const KEYWORDS: Record<Exclude<Category, 'other'>, Record<string, number>
   waste: { rubbish: 3, bin: 2, mattress: 2, fridge: 2, sofa: 2, bag: 1, overflow: 1, dumped: 2 },
   graffiti: { graffiti: 3, vandal: 2, vandalism: 3, smash: 1, scrawl: 2, offensive: 1 },
   water: { flood: 3, drain: 2, leak: 2, burst: 2, pipe: 1, sewage: 3, water: 1, gully: 2 },
-  parks: { park: 2, tree: 2, branch: 2, playground: 3, bench: 1, grass: 1, overgrown: 2, hedge: 2 },
+  parks: {
+    park: 2,
+    garden: 2,
+    tree: 2,
+    branch: 2,
+    playground: 3,
+    bench: 1,
+    grass: 1,
+    overgrown: 2,
+    hedge: 2,
+  },
   traffic: {
     traffic: 2,
     signal: 2,
