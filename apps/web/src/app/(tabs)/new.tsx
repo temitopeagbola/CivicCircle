@@ -119,6 +119,7 @@ export default function NewReportScreen() {
               style={styles.preview}
               contentFit="cover"
               alt="Selected photo of the issue"
+              accessibilityLabel="Selected photo of the issue"
             />
             <Button
               label="Change photo"

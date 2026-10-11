@@ -76,6 +76,7 @@ export default function ReportScreen() {
           contentFit="cover"
           transition={200}
           alt={`Photo: ${report.summary}`}
+          accessibilityLabel={`Photo: ${report.summary}`}
         />
       ) : null}
 

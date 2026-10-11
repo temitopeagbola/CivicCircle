@@ -12,7 +12,8 @@
     "make-moderator": "tsx --env-file-if-exists=../../.env src/scripts/make-moderator.ts",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "test:firestore": "vitest run --config vitest.emulator.config.ts"
+    "test:firestore": "vitest run --config vitest.emulator.config.ts",
+    "start:dev": "tsx src/server.ts"
   },
   "dependencies": {
     "@civiccircle/shared": "*",
