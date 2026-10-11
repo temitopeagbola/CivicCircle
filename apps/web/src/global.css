@@ -1,0 +1,38 @@
+/* Web-only global styles (CSS imports are ignored on iOS/Android). */
+html,
+body {
+  background: #f8fafc;
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    Roboto,
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Visible keyboard focus for every interactive element (WCAG 2.4.7). */
+:focus-visible {
+  outline: 3px solid #2563eb !important;
+  outline-offset: 2px !important;
+  border-radius: 6px;
+}
+
+input,
+textarea {
+  font-family: inherit;
+}
+
+/* Leaflet popups inherit the app font. */
+.leaflet-container {
+  font-family: inherit;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
