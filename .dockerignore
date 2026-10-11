@@ -1,0 +1,10 @@
+**/node_modules
+**/dist
+**/.expo
+.git
+.github
+**/*.log
+test-results
+playwright-report
+.env
+.env.*

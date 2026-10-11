@@ -1,0 +1,82 @@
+# Whole stack locally with one command:
+#   docker compose up --build
+# Web app:      http://localhost:8081
+# API:          http://localhost:8787/health
+# Emulator UI:  http://localhost:4000   (Firestore, Auth and Storage data)
+#
+# Runs on the Firebase Emulator Suite, so no Firebase project or credentials are needed.
+# AI uses the offline mock provider unless OPENAI_API_KEY is set in .env or your shell.
+
+name: civiccircle
+
+x-firebase-env: &firebase-env
+  FIREBASE_PROJECT_ID: demo-civiccircle
+  FIRESTORE_EMULATOR_HOST: firebase:8080
+  FIREBASE_AUTH_EMULATOR_HOST: firebase:9099
+  FIREBASE_STORAGE_EMULATOR_HOST: firebase:9199
+  # Photo URLs are opened by your browser, so they must use the host-mapped port.
+  STORAGE_PUBLIC_URL: http://localhost:9199
+
+services:
+  firebase:
+    build:
+      context: .
+      dockerfile: docker/firebase/Dockerfile
+    ports:
+      - '4000:4000'
+      - '8080:8080'
+      - '9099:9099'
+      - '9199:9199'
+    volumes:
+      - firebase-data:/data
+    # Lets the emulators export data to the volume before exiting.
+    stop_signal: SIGINT
+    stop_grace_period: 30s
+
+  seed:
+    image: civiccircle-api
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    command: ['node', 'dist/seed.js']
+    environment:
+      <<: *firebase-env
+    depends_on:
+      firebase:
+        condition: service_healthy
+    restart: 'no'
+
+  api:
+    image: civiccircle-api
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    environment:
+      <<: *firebase-env
+      PORT: 8787
+      CORS_ORIGINS: http://localhost:8081,http://localhost:8080,http://localhost:19006
+      TRUST_PROXY: 'false'
+      AI_PROVIDER: ${AI_PROVIDER:-auto}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      OPENAI_MODEL: ${OPENAI_MODEL:-gpt-4.1-mini}
+      OPENAI_MONTHLY_BUDGET_USD: ${OPENAI_MONTHLY_BUDGET_USD:-5}
+    ports:
+      - '8787:8787'
+    depends_on:
+      seed:
+        condition: service_completed_successfully
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+      args:
+        EXPO_PUBLIC_API_URL: http://localhost:8787
+        EXPO_PUBLIC_FIREBASE_AUTH_EMULATOR_URL: http://localhost:9099
+    ports:
+      - '8081:80'
+    depends_on:
+      - api
+
+volumes:
+  firebase-data:
