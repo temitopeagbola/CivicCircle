@@ -59,7 +59,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       onAuthStateChanged(auth, (next) => {
         setUser(next);
         setStatus(next ? 'signedIn' : 'signedOut');
-        if (!next) queryClient.clear();
+        if (next) {
+          // Anything fetched before the session was restored lacks the viewer's upvotes.
+          void queryClient.invalidateQueries({ predicate: (q) => q.queryKey[0] !== 'me' });
+        } else {
+          queryClient.clear();
+        }
       }),
     [queryClient],
   );
@@ -85,6 +90,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const credential = await createUserWithEmailAndPassword(auth, email.trim(), password);
       await updateProfile(credential.user, { displayName: displayName.trim() });
       const me = await api.updateMe(displayName.trim());
+      // Cancel the profile fetch fired on sign-up so it can't overwrite the new name.
+      await queryClient.cancelQueries({ queryKey: ['me', credential.user.uid] });
       queryClient.setQueryData(['me', credential.user.uid], me);
     },
     [queryClient],
