@@ -1,0 +1,8 @@
+node_modules
+dist
+.expo
+package-lock.json
+playwright-report
+test-results
+apps/web/assets
+*.md

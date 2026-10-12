@@ -1,0 +1,57 @@
+{
+  "expo": {
+    "name": "CivicCircle",
+    "slug": "civiccircle",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "scheme": "civiccircle",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.temitopeagbola.civiccircle"
+    },
+    "android": {
+      "package": "com.temitopeagbola.civiccircle",
+      "adaptiveIcon": {
+        "backgroundColor": "#0F766E",
+        "foregroundImage": "./assets/images/android-icon-foreground.png",
+        "backgroundImage": "./assets/images/android-icon-background.png",
+        "monochromeImage": "./assets/images/android-icon-monochrome.png"
+      }
+    },
+    "web": {
+      "output": "single",
+      "favicon": "./assets/images/favicon.png",
+      "name": "CivicCircle — report local issues",
+      "shortName": "CivicCircle",
+      "themeColor": "#0F766E",
+      "backgroundColor": "#F8FAFC",
+      "description": "Report potholes, broken streetlights and fly-tipping with a photo. AI files it and spots duplicates nearby."
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#0F766E",
+          "image": "./assets/images/splash-icon.png",
+          "imageWidth": 76
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "CivicCircle uses your location to pin reports and show issues near you."
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "CivicCircle needs your photos so you can attach a picture of the issue.",
+          "cameraPermission": "CivicCircle uses the camera so you can photograph the issue."
+        }
+      ]
+    ]
+  }
+}

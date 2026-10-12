@@ -1,0 +1,12 @@
+rules_version = '2';
+
+// CivicCircle clients never talk to Firestore directly: every read and write goes through
+// the API, which uses the Admin SDK (not subject to these rules) and enforces validation,
+// roles and rate limits. Deny everything else.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

@@ -1,0 +1,52 @@
+# Render Blueprint for the CivicCircle API (free web service, Docker runtime).
+# New → Blueprint → pick this repo. Values marked `sync: false` are prompted for on
+# first deploy; see README "Deploy" for where each one comes from.
+services:
+  - type: web
+    name: civiccircle-api
+    runtime: docker
+    plan: free
+    region: frankfurt
+    dockerfilePath: ./apps/api/Dockerfile
+    dockerContext: .
+    healthCheckPath: /health
+    autoDeploy: true
+    # Only redeploy when API-related files change.
+    buildFilter:
+      paths:
+        - apps/api/**
+        - packages/shared/**
+        - package.json
+        - package-lock.json
+        - tsconfig.base.json
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: LOG_LEVEL
+        value: info
+      # Render terminates TLS at one proxy hop; trusting exactly one hop gives real client
+      # IPs for rate limiting without letting clients spoof X-Forwarded-For.
+      - key: TRUST_PROXY
+        value: '1'
+      - key: CORS_ORIGINS
+        value: https://civiccircle.temitopeagbola.com,https://civiccircle.netlify.app
+      - key: FIREBASE_PROJECT_ID
+        sync: false
+      - key: FIREBASE_STORAGE_BUCKET
+        sync: false
+      # Service account JSON, base64-encoded: base64 -w0 service-account.json
+      - key: FIREBASE_SERVICE_ACCOUNT
+        sync: false
+      # Leave OPENAI_API_KEY empty to run on the free mock AI provider.
+      - key: AI_PROVIDER
+        value: auto
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: OPENAI_MODEL
+        value: gpt-4.1-mini
+      - key: OPENAI_MONTHLY_BUDGET_USD
+        value: '5'
+      - key: DEMO_LOGIN_ENABLED
+        value: 'true'
+      - key: DEMO_MODERATOR_ENABLED
+        value: 'true'
