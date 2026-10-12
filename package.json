@@ -2,6 +2,13 @@
   "name": "civiccircle",
   "private": true,
   "description": "Community issue reporting with AI triage — Expo app + Node API on Firebase.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/temitopeagbola/CivicCircle.git"
+  },
+  "bugs": {
+    "url": "https://github.com/temitopeagbola/CivicCircle/issues"
+  },
   "workspaces": [
     "apps/*",
     "packages/*"
@@ -13,7 +20,7 @@
     "dev:api": "npm run dev -w @civiccircle/api",
     "dev:web": "npm run start -w @civiccircle/web",
     "emulators": "firebase emulators:start --project demo-civiccircle --only auth,firestore,storage",
-    "seed": "npm run seed -w @civiccircle/api",
+    "seed": "npm run seed -w @civiccircle/api --",
     "build:web": "npm run build -w @civiccircle/web",
     "build:api": "npm run build -w @civiccircle/api",
     "lint": "eslint . && prettier --check .",

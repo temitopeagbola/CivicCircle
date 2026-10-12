@@ -105,7 +105,11 @@ function parseTrustProxy(raw: string): Config['trustProxy'] {
   return value.split(',').map((s) => s.trim());
 }
 
-export function loadConfig(source: NodeJS.ProcessEnv = process.env): Config {
+export function loadConfig(rawSource: NodeJS.ProcessEnv = process.env): Config {
+  // .env files leave optional settings blank (`NAME=`); treat those as unset, not as "".
+  const source = Object.fromEntries(
+    Object.entries(rawSource).filter(([, value]) => value !== undefined && value !== ''),
+  );
   const parsed = envSchema.safeParse(source);
   if (!parsed.success) {
     const lines = parsed.error.issues.map((i) => `  ${i.path.join('.')}: ${i.message}`);

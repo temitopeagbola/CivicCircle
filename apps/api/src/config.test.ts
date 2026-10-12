@@ -1,8 +1,23 @@
+import { readFileSync } from 'node:fs';
+import { parseEnv } from 'node:util';
+
 import { describe, expect, it } from 'vitest';
 
 import { loadConfig } from './config';
 
 describe('loadConfig', () => {
+  it('accepts the documented .env.example as-is (blank optional values are unset)', () => {
+    const example = parseEnv(
+      readFileSync(new URL('../../../.env.example', import.meta.url), 'utf8'),
+    );
+    const cfg = loadConfig(example);
+    expect(cfg.firebase.storageBucket).toBe('demo-civiccircle.firebasestorage.app');
+    expect(cfg.firebase.storagePublicUrl).toBe('http://127.0.0.1:9199');
+    expect(cfg.firebase.usingEmulators).toBe(true);
+    expect(cfg.ai.provider).toBe('mock');
+    expect(cfg.ai.priceOverride).toBeUndefined();
+  });
+
   it('selects the mock provider when no key is set and OpenAI when one is', () => {
     expect(loadConfig({}).ai.provider).toBe('mock');
     expect(loadConfig({ OPENAI_API_KEY: 'sk-test' }).ai.provider).toBe('openai');
